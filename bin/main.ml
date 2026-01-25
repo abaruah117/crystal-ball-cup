@@ -9,7 +9,8 @@ module Make (Collection : Collection.S) = struct
     fun () ->
       print_endline "# Events\n";
       List.iteri Collection.all ~f:(fun i event ->
-        print_endline [%string "## %{i+1#Int}. %{Event.short event}"];
+        print_endline [%string "## %{i+1#Int}. %{Event.short event}\n"];
+        print_endline [%string "\\framesubtitle{%{Event.label event}}\n"];
         print_endline [%string "%{Event.precise event}\n"])
   ;;
 
@@ -79,7 +80,9 @@ module Make (Collection : Collection.S) = struct
 end
 
 let command =
-  let collections : Collection.t list = [ (module Crystal_2025) ] in
+  let collections : Collection.t list =
+    [ (module Crystal_2025); (module Crystal_2026) ]
+  in
   Command.group ~summary:"Crystal Ball Cup"
   @@ List.map collections ~f:(fun (module Collection) ->
     let module Commands = Make (Collection) in
